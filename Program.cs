@@ -1,4 +1,6 @@
-﻿using MP3FilesIP3TagExtraction.Tools;
+﻿using System;
+using System.IO;
+using MP3FilesIP3TagExtraction.Tools;
 
 namespace MP3FilesIP3TagExtraction
 {
@@ -12,12 +14,24 @@ namespace MP3FilesIP3TagExtraction
 			var extractionTool = new MP3FilesIP3TagExtraction(filePath);
 			extractionTool.Extract();
 			*/
-
-			/* C:\toMoveToHDDs\Music\bands.txt */
-			const string fromFilePath = "";
-			const string toFilePath = "";
+			
+			const string fromFilePath = @"C:\toMoveToHDDs\Music\bands.txt";
+			const string toFilePath = @"D:\Yfirfarid\Music\bands.txt";
 			var combinationTool = new BandsFilesCombination(fromFilePath, toFilePath, true);
-			combinationTool.Combine();
+
+			try
+			{
+				combinationTool.Combine();
+			}
+			catch (FileNotFoundException e)
+			{
+				using StreamWriter errorFile = new StreamWriter(@"C:\tmp\errors.txt", true);
+				if (!string.IsNullOrWhiteSpace(e.Message))
+					errorFile.WriteLine("Error: " + e.Message + Environment.NewLine);
+				else
+					errorFile.WriteLine("Exception cast without a message!");
+				errorFile.Close();
+			}
 		}
 	}
 }

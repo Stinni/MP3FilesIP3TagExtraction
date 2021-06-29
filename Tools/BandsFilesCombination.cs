@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace MP3FilesIP3TagExtraction.Tools
 {
@@ -21,13 +23,32 @@ namespace MP3FilesIP3TagExtraction.Tools
 		public void Combine()
 		{
 			if (!File.Exists(_fromFilePath))
-				throw new FileNotFoundException("File not found at path: " + _fromFilePath);
+				throw new FileNotFoundException("File not found: " + _fromFilePath);
 			if (!File.Exists(_toFilePath))
-				throw new FileNotFoundException("File not found at path: " + _toFilePath);
+				throw new FileNotFoundException("File not found: " + _toFilePath);
 
+			using StreamReader toFile = new StreamReader(_toFilePath);
+			using StreamReader fromFile = new StreamReader(_fromFilePath);
+			string line;
+			List<string> bands = new List<string>();
 
+			while ((line = toFile.ReadLine()) != null)
+			{
+				bands.Add(line);
+			}
+			while ((line = fromFile.ReadLine()) != null)
+			{
+				if (bands.Contains(line)) continue;
+				bands.Add(line);
+			}
+			toFile.Close();
+			fromFile.Close();
 
-			//  TODO: At the end - to be deleted
+			using StreamWriter outFile = new StreamWriter(_toFilePath, false);
+			foreach (string b in bands)
+				outFile.WriteLine(b);
+			outFile.Close();
+
 			if (_deleteFromFile)
 				File.Delete(_fromFilePath);
 		}
