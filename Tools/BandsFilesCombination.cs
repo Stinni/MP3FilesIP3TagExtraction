@@ -44,6 +44,7 @@ namespace MP3FilesIP3TagExtraction.Tools
 			toFile.Close();
 			fromFile.Close();
 
+			bands.Sort();
 			using StreamWriter outFile = new StreamWriter(_toFilePath, false);
 			foreach (string b in bands)
 				outFile.WriteLine(b);

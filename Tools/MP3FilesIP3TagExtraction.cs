@@ -33,6 +33,7 @@ namespace MP3FilesIP3TagExtraction.Tools
 
 			using StreamWriter errorFile = new StreamWriter(_errorFilePath, true);
 			List<string> bands = new List<string>();
+			List<string> filesToDelete = new List<string>();
 			int v1Tags = 0;
 
 			foreach (string musicFile in _musicFiles)
@@ -49,6 +50,7 @@ namespace MP3FilesIP3TagExtraction.Tools
 					{
 						if (!string.IsNullOrWhiteSpace(tag.Artists))
 						{
+							filesToDelete.Add(musicFile);
 							string tmpArtist = tag.Artists;
 							string artist = tmpArtist.Replace("\0", string.Empty);
 							if (!bands.Contains(artist))
@@ -59,6 +61,7 @@ namespace MP3FilesIP3TagExtraction.Tools
 
 						if (!string.IsNullOrWhiteSpace(tag.Band))
 						{
+							filesToDelete.Add(musicFile);
 							string tmpBand = tag.Band;
 							string band = tmpBand.Replace("\0", string.Empty);
 							if (!bands.Contains(band))
@@ -86,6 +89,12 @@ namespace MP3FilesIP3TagExtraction.Tools
 
 			errorFile.WriteLine("Total number of V1 tags: " + v1Tags);
 			errorFile.Close();
+
+			foreach (string f in filesToDelete)
+			{
+				if (File.Exists(f))
+					File.Delete(f);
+			}
 		}
 	}
 }

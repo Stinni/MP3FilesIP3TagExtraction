@@ -9,12 +9,12 @@ namespace MP3FilesIP3TagExtraction
 		static void Main(string[] args)
 		{
 			//  Uncommment to use the MP3 IP3 tag extraction tool
-			/*
-			const string filePath = @"D:\AnyRecover 2021-02-23 at 00.39.13\E(Raw files)\MP3";
-			var extractionTool = new MP3FilesIP3TagExtraction(filePath);
+			const string filePath = @"D:\AnyRecover 2021-02-23 at 00.39.13\E(NTFS)\Lost Location";
+			var extractionTool = new Tools.MP3FilesIP3TagExtraction(filePath);
 			extractionTool.Extract();
-			*/
 			
+			//  Uncomment to use the file combination tool
+			/*
 			const string fromFilePath = @"C:\toMoveToHDDs\Music\bands.txt";
 			const string toFilePath = @"D:\Yfirfarid\Music\bands.txt";
 			var combinationTool = new BandsFilesCombination(fromFilePath, toFilePath, true);
@@ -32,6 +32,7 @@ namespace MP3FilesIP3TagExtraction
 					errorFile.WriteLine("Exception cast without a message!");
 				errorFile.Close();
 			}
+			*/
 		}
 	}
 }
